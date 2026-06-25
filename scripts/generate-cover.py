@@ -2,13 +2,15 @@
 from __future__ import annotations
 
 from pathlib import Path
+import shutil
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 DESKTOP = Path.home() / "Desktop"
+SOURCE = ASSETS / "source" / "social-preview-option-04-base.png"
 
 FONT = "/System/Library/Fonts/SFNS.ttf"
 MONO = "/System/Library/Fonts/SFNSMono.ttf"
@@ -22,119 +24,102 @@ def mono(size: int) -> ImageFont.FreeTypeFont:
     return ImageFont.truetype(MONO, size=size)
 
 
-def draw_text(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, fill: str, size: int) -> None:
-    draw.text(xy, text, font=font(size), fill=fill)
+def fit_base(width: int, height: int) -> Image.Image:
+    source = Image.open(SOURCE).convert("RGB")
+    return ImageOps.fit(source, (width, height), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
 
 
-def draw_app_row(
-    draw: ImageDraw.ImageDraw,
-    x: int,
-    y: int,
-    w: int,
-    name: str,
-    detail: str,
-    color: str,
-    selected: bool = False,
-) -> None:
-    bg = "#eef5ff" if selected else "#ffffff"
-    outline = "#cfe2ff" if selected else "#e6e8eb"
-    draw.rounded_rectangle((x, y, x + w, y + 82), radius=18, fill=bg, outline=outline, width=2)
-    draw.rounded_rectangle((x + 24, y + 18, x + 70, y + 64), radius=12, fill=color)
-    draw_text(draw, (x + 92, y + 15), name, "#101318", 26)
-    draw.text((x + 92, y + 48), detail, font=mono(16), fill="#737982")
-    if selected:
-        cx, cy = x + w - 42, y + 41
-        draw.ellipse((cx - 14, cy - 14, cx + 14, cy + 14), fill="#1473e6")
-        draw.line((cx - 7, cy, cx - 2, cy + 6, cx + 8, cy - 8), fill="#ffffff", width=4)
+def left_luma(image: Image.Image) -> float:
+    r, g, b = image.crop((0, 0, int(image.width * 0.45), image.height)).resize((1, 1)).getpixel((0, 0))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
-def render(path: Path, width: int, height: int) -> None:
-    scale = width / 2560
-    im = Image.new("RGB", (width, height), "#f6f7f8")
-    draw = ImageDraw.Draw(im)
+def text_shadow(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, typeface: ImageFont.FreeTypeFont, fill: str, shadow: str) -> None:
+    x, y = xy
+    for dx, dy in ((0, 3), (1, 3), (-1, 3)):
+        draw.text((x + dx, y + dy), text, font=typeface, fill=shadow)
+    draw.text((x, y), text, font=typeface, fill=fill)
 
-    def s(value: int) -> int:
-        return int(value * scale)
 
-    # Background bands
-    draw.rectangle((0, 0, width, height), fill="#f6f7f8")
-    draw.rounded_rectangle((s(120), s(120), width - s(120), height - s(120)), radius=s(42), fill="#ffffff")
-    draw.rectangle((s(120), height - s(250), width - s(120), height - s(120)), fill="#f1f4f7")
+def render(width: int, height: int) -> Image.Image:
+    image = fit_base(width, height).convert("RGBA")
+    scale = width / 1280
+    overlay = Image.new("RGBA", image.size, (0, 0, 0, 0))
+    od = ImageDraw.Draw(overlay)
 
-    # Product text
-    draw_text(draw, (s(190), s(210)), "Quit Other Apps", "#101318", s(96))
-    draw_text(draw, (s(198), s(330)), "Protect what stays open. Close the rest.", "#4d535c", s(42))
+    dark_text = left_luma(image.convert("RGB")) > 132
+    gradient_width = int(width * 0.58)
 
-    badge_x, badge_y = s(196), s(424)
-    draw.rounded_rectangle((badge_x, badge_y, badge_x + s(382), badge_y + s(62)), radius=s(18), fill="#101318")
-    draw.text((badge_x + s(26), badge_y + s(16)), "macOS utility", font=mono(s(24)), fill="#ffffff")
+    if dark_text:
+        for x in range(gradient_width):
+            alpha = int(230 * max(0, 1 - x / gradient_width))
+            od.line((x, 0, x, height), fill=(255, 255, 255, alpha))
+        title_fill = "#0c1118"
+        body_fill = "#2f3845"
+        chip_fill = "#0c1118"
+        chip_text = "#ffffff"
+        shadow = "#ffffff"
+    else:
+        for x in range(gradient_width):
+            alpha = int(185 * max(0, 1 - x / gradient_width))
+            od.line((x, 0, x, height), fill=(0, 0, 0, alpha))
+        title_fill = "#ffffff"
+        body_fill = "#e8eef6"
+        chip_fill = "#ffffff"
+        chip_text = "#0c1118"
+        shadow = "#101820"
 
-    badge2_x = badge_x + s(410)
-    draw.rounded_rectangle((badge2_x, badge_y, badge2_x + s(430), badge_y + s(62)), radius=s(18), fill="#f0f4f8")
-    draw.text((badge2_x + s(26), badge_y + s(16)), "No code whitelist", font=mono(s(24)), fill="#101318")
+    image = Image.alpha_composite(image, overlay)
+    draw = ImageDraw.Draw(image)
 
-    # Mock macOS window
-    x0, y0 = s(1140), s(210)
-    ww, wh = s(1060), s(720)
-    draw.rounded_rectangle((x0, y0, x0 + ww, y0 + wh), radius=s(36), fill="#ffffff", outline="#d9dde3", width=s(2))
-    draw.rounded_rectangle((x0, y0, x0 + ww, y0 + s(94)), radius=s(36), fill="#f0f2f5")
-    draw.rectangle((x0, y0 + s(50), x0 + ww, y0 + s(94)), fill="#f0f2f5")
+    left = int(72 * scale)
+    top = int(90 * scale)
+    chip_h = int(42 * scale)
+    chip_w = int(184 * scale)
+    draw.rounded_rectangle((left, top, left + chip_w, top + chip_h), radius=int(12 * scale), fill=chip_fill)
+    draw.text((left + int(22 * scale), top + int(12 * scale)), "macOS utility", font=mono(int(18 * scale)), fill=chip_text)
 
-    for i, c in enumerate(["#ff5f57", "#ffbd2e", "#28c840"]):
-        cx = x0 + s(38 + i * 36)
-        cy = y0 + s(47)
-        draw.ellipse((cx - s(10), cy - s(10), cx + s(10), cy + s(10)), fill=c)
+    text_shadow(draw, (left, int(166 * scale)), "Quit Other Apps", font(int(70 * scale)), title_fill, shadow)
+    text_shadow(draw, (left + int(4 * scale), int(258 * scale)), "Protect what stays open.", font(int(32 * scale)), body_fill, shadow)
+    text_shadow(draw, (left + int(4 * scale), int(304 * scale)), "Close the rest.", font(int(32 * scale)), body_fill, shadow)
 
-    draw.text((x0 + s(156), y0 + s(30)), "Applications", font=font(s(28)), fill="#101318")
-    draw.text((x0 + s(614), y0 + s(30)), "Protected apps", font=font(s(28)), fill="#101318")
-    draw.line((x0 + s(530), y0 + s(94), x0 + s(530), y0 + wh), fill="#e1e4e8", width=s(2))
+    proof_y = height - int(92 * scale)
+    proofs = ["Finder-safe", "Drag-and-drop", "Normal quit"]
+    x = left
+    for proof in proofs:
+        w = int((draw.textlength(proof, font=font(int(20 * scale))) + 34 * scale))
+        draw.rounded_rectangle((x, proof_y, x + w, proof_y + int(38 * scale)), radius=int(12 * scale), fill=(255, 255, 255, 215) if dark_text else (12, 17, 24, 205))
+        draw.text((x + int(17 * scale), proof_y + int(9 * scale)), proof, font=font(int(20 * scale)), fill="#1b2430" if dark_text else "#ffffff")
+        x += w + int(14 * scale)
 
-    row_w = s(418)
-    draw_app_row(draw, x0 + s(58), y0 + s(140), row_w, "Safari", "com.apple.Safari", "#30b0c7")
-    draw_app_row(draw, x0 + s(58), y0 + s(242), row_w, "Terminal", "com.apple.Terminal", "#3a3f45", selected=True)
-    draw_app_row(draw, x0 + s(58), y0 + s(344), row_w, "Music", "com.apple.Music", "#fa233b")
-    draw_app_row(draw, x0 + s(58), y0 + s(446), row_w, "Notes", "com.apple.Notes", "#ffd60a")
+    return image.convert("RGB")
 
-    protected_x = x0 + s(586)
-    draw.rounded_rectangle((protected_x, y0 + s(140), protected_x + s(408), y0 + s(210)), radius=s(18), fill="#fff7ed", outline="#ffd7a8", width=s(2))
-    draw_text(draw, (protected_x + s(24), y0 + s(157)), "Finder", "#101318", s(26))
-    draw.text((protected_x + s(24), y0 + s(188)), "windows close, app keeps running", font=mono(s(15)), fill="#8a5a18")
 
-    draw.rounded_rectangle((protected_x, y0 + s(232), protected_x + s(408), y0 + s(302)), radius=s(18), fill="#eef5ff", outline="#cfe2ff", width=s(2))
-    draw_text(draw, (protected_x + s(24), y0 + s(249)), "Terminal", "#101318", s(26))
-    draw.text((protected_x + s(24), y0 + s(280)), "protected by the user", font=mono(s(15)), fill="#315f9a")
-
-    draw.rounded_rectangle((protected_x, y0 + s(340), protected_x + s(408), y0 + s(430)), radius=s(18), fill="#f8fafc", outline="#cfd6df", width=s(2))
-    draw.text((protected_x + s(92), y0 + s(371)), "Drop apps to protect", font=font(s(28)), fill="#59616b")
-    draw.rounded_rectangle((protected_x + s(30), y0 + s(365), protected_x + s(68), y0 + s(403)), radius=s(10), fill="#1473e6")
-
-    draw.rounded_rectangle((protected_x, y0 + s(548), protected_x + s(408), y0 + s(620)), radius=s(20), fill="#ffebe9")
-    draw.text((protected_x + s(76), y0 + s(566)), "Quit apps", font=font(s(30)), fill="#a21c14")
-    draw.ellipse((protected_x + s(28), y0 + s(560), protected_x + s(62), y0 + s(594)), fill="#d92d20")
-
-    # Footer proof points
-    foot_y = height - s(205)
-    points = [
-        ("Finder-safe", "closes windows, never quits Finder"),
-        ("Drag-and-drop", "protect apps without editing code"),
-        ("Normal quit", "no force kill, no background service"),
-    ]
-    for i, (title, detail) in enumerate(points):
-        px = s(190 + i * 690)
-        draw.text((px, foot_y), title, font=font(s(34)), fill="#101318")
-        draw.text((px, foot_y + s(48)), detail, font=font(s(24)), fill="#59616b")
-
-    im.save(path, "PNG", optimize=True, compress_level=9)
+def save_under_1mb_jpeg(image: Image.Image, path: Path) -> None:
+    quality = 96
+    while True:
+        image.save(path, "JPEG", quality=quality, optimize=True, progressive=True)
+        if path.stat().st_size < 1024 * 1024 or quality <= 82:
+            return
+        quality -= 3
 
 
 def main() -> None:
     ASSETS.mkdir(parents=True, exist_ok=True)
-    render(ASSETS / "cover.png", 2560, 1280)
-    render(ASSETS / "social-preview.png", 1280, 640)
-    desktop_target = DESKTOP / "quit-other-apps-social-preview.png"
-    render(desktop_target, 1280, 640)
+
+    cover = render(2560, 1280)
+    cover.save(ASSETS / "cover.png", "PNG", optimize=True, compress_level=9)
+
+    social = render(1280, 640)
+    social.save(ASSETS / "social-preview.png", "PNG", optimize=True, compress_level=9)
+    save_under_1mb_jpeg(social, ASSETS / "social-preview.jpg")
+
+    desktop_target = DESKTOP / "quit-other-apps-social-preview.jpg"
+    shutil.copy2(ASSETS / "social-preview.jpg", desktop_target)
+
     print(ASSETS / "cover.png")
     print(ASSETS / "social-preview.png")
+    print(ASSETS / "social-preview.jpg")
     print(desktop_target)
 
 

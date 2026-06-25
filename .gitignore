@@ -1,4 +1,5 @@
 .build/
 dist/
+assets/social-preview-candidates/
 .DS_Store
 *.xcuserstate
