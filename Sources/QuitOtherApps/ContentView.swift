@@ -1,5 +1,4 @@
 import SwiftUI
-import UniformTypeIdentifiers
 
 struct ContentView: View {
     @EnvironmentObject private var scanner: ApplicationScanner
@@ -7,8 +6,6 @@ struct ContentView: View {
 
     @State private var searchText = ""
     @State private var statusText = "Finder and this app are always kept."
-    @State private var isDropTargeted = false
-    @State private var showQuitConfirmation = false
 
     private var filteredApps: [AppInfo] {
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -45,14 +42,6 @@ struct ContentView: View {
         .onAppear {
             scanner.scan()
         }
-        .alert("Quit other apps?", isPresented: $showQuitConfirmation) {
-            Button("Quit apps", role: .destructive) {
-                performQuit()
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("Finder windows will close. Protected apps stay open. Apps with unsaved changes may ask before quitting.")
-        }
     }
 
     private var header: some View {
@@ -82,7 +71,7 @@ struct ContentView: View {
             .help("Scan installed applications again")
 
             Button {
-                showQuitConfirmation = true
+                performQuit()
             } label: {
                 Label("Quit apps", systemImage: "power")
             }
@@ -134,8 +123,6 @@ struct ContentView: View {
                 detail: "\(whitelist.items.count + 2) kept"
             )
 
-            dropZone
-
             VStack(alignment: .leading, spacing: 8) {
                 Text("Always protected")
                     .font(.caption.weight(.semibold))
@@ -163,7 +150,7 @@ struct ContentView: View {
                 EmptyStateView(
                     systemImage: "plus.app",
                     title: "No apps added yet",
-                    detail: "Add from the list or drop .app files here."
+                    detail: "Add apps from the list on the left."
                 )
             } else {
                 List(whitelist.items) { app in
@@ -179,33 +166,6 @@ struct ContentView: View {
             }
         }
         .padding(18)
-        .onDrop(
-            of: [UTType.fileURL.identifier],
-            isTargeted: $isDropTargeted,
-            perform: handleDrop(providers:)
-        )
-    }
-
-    private var dropZone: some View {
-        RoundedRectangle(cornerRadius: 8)
-            .stroke(
-                isDropTargeted ? Color.accentColor : Color.secondary.opacity(0.45),
-                style: StrokeStyle(lineWidth: 1, dash: [5, 4])
-            )
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(isDropTargeted ? Color.accentColor.opacity(0.08) : Color.clear)
-            )
-            .overlay {
-                HStack(spacing: 8) {
-                    Image(systemName: "plus.app")
-                    Text("Drop apps to protect")
-                }
-                .font(.callout)
-                .foregroundStyle(.secondary)
-            }
-            .frame(height: 58)
-            .accessibilityLabel("Drop apps to protect")
     }
 
     private var statusBar: some View {
@@ -245,41 +205,6 @@ struct ContentView: View {
         statusText = message
     }
 
-    private func handleDrop(providers: [NSItemProvider]) -> Bool {
-        let fileProviders = providers.filter {
-            $0.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier)
-        }
-
-        guard !fileProviders.isEmpty else {
-            return false
-        }
-
-        for provider in fileProviders {
-            provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { item, _ in
-                let url: URL?
-
-                if let data = item as? Data {
-                    url = URL(dataRepresentation: data, relativeTo: nil)
-                } else {
-                    url = item as? URL
-                }
-
-                guard let url else {
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    if whitelist.addApp(at: url) {
-                        statusText = "Protected \(url.deletingPathExtension().lastPathComponent)."
-                    } else {
-                        statusText = "Only .app bundles can be added."
-                    }
-                }
-            }
-        }
-
-        return true
-    }
 }
 
 private struct ApplicationRow: View {
