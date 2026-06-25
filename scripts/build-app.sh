@@ -2,9 +2,9 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-APP_NAME="Quit Other Apps"
+APP_NAME="Focus Keeper"
 EXECUTABLE_NAME="QuitOtherApps"
-BUNDLE_ID="${BUNDLE_ID:-com.martinlau.QuitOtherApps}"
+BUNDLE_ID="${BUNDLE_ID:-com.martinlau.FocusKeeper}"
 VERSION="${VERSION:-0.1.0}"
 BUILD_NUMBER="${BUILD_NUMBER:-1}"
 CONFIGURATION="${CONFIGURATION:-release}"

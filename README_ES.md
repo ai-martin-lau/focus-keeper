@@ -3,12 +3,12 @@
 </p>
 
 <p align="center">
-  <img src="assets/cover.png" alt="Quit Other Apps" width="100%">
+  <img src="assets/cover.png" alt="Focus Keeper" width="100%">
 </p>
 
-# Quit Other Apps
+# Focus Keeper
 
-Quit Other Apps es una pequeña utilidad nativa para macOS que cierra distracciones y mantiene abiertas las apps que elijas.
+Focus Keeper es una pequeña utilidad nativa para macOS que cierra distracciones y mantiene abiertas las apps que elijas.
 
 Ya no hace falta editar una lista blanca en AppleScript. Abre la app, escanea Applications y protege las apps que deben permanecer abiertas.
 
@@ -28,14 +28,14 @@ Descarga la última versión: [`focus-keeper.dmg`](https://github.com/ai-martin-
 ## Instalación
 
 1. Abre el DMG.
-2. Arrastra `Quit Other Apps.app` a Applications.
+2. Arrastra `Focus Keeper.app` a Applications.
 3. Abre la app y elige las apps que quieres proteger.
 
 Si macOS bloquea la app en el primer inicio:
 
 1. Abre System Settings.
 2. Ve a Privacy & Security.
-3. Baja hasta Security y haz clic en Open Anyway para `Quit Other Apps.app`.
+3. Baja hasta Security y haz clic en Open Anyway para `Focus Keeper.app`.
 4. Confirma Open cuando macOS lo pida.
 
 La primera vez que la app cierre ventanas de Finder, macOS puede pedir permiso de Automatización. Permítelo para que la app pueda cerrar ventanas sin cerrar Finder.

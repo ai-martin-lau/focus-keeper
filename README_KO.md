@@ -3,12 +3,12 @@
 </p>
 
 <p align="center">
-  <img src="assets/cover.png" alt="Quit Other Apps" width="100%">
+  <img src="assets/cover.png" alt="Focus Keeper" width="100%">
 </p>
 
-# Quit Other Apps
+# Focus Keeper
 
-Quit Other Apps는 사용자가 보호한 앱은 그대로 두고, 다른 일반 전면 앱에 정상 종료 요청을 보내는 작은 네이티브 macOS 유틸리티입니다.
+Focus Keeper는 사용자가 보호한 앱은 그대로 두고, 다른 일반 전면 앱에 정상 종료 요청을 보내는 작은 네이티브 macOS 유틸리티입니다.
 
 이제 AppleScript의 화이트리스트를 직접 수정할 필요가 없습니다. 앱을 열고 Applications를 스캔한 뒤, 종료하지 않을 앱을 보호 목록에 추가하면 됩니다.
 
@@ -28,14 +28,14 @@ Quit Other Apps는 사용자가 보호한 앱은 그대로 두고, 다른 일반
 ## 설치
 
 1. DMG를 엽니다.
-2. `Quit Other Apps.app`을 Applications로 드래그합니다.
+2. `Focus Keeper.app`을 Applications로 드래그합니다.
 3. 앱을 열고 보호할 앱을 선택합니다.
 
 처음 실행할 때 macOS가 앱을 차단하는 경우:
 
 1. 시스템 설정을 엽니다.
 2. 개인정보 보호 및 보안으로 이동합니다.
-3. 보안 섹션까지 스크롤한 뒤 `Quit Other Apps.app`의 Open Anyway를 클릭합니다.
+3. 보안 섹션까지 스크롤한 뒤 `Focus Keeper.app`의 Open Anyway를 클릭합니다.
 4. macOS가 다시 물으면 Open을 확인합니다.
 
 처음 Finder 창을 닫을 때 macOS가 자동화 권한을 요청할 수 있습니다. Finder를 종료하지 않고 창만 닫으려면 허용해야 합니다.

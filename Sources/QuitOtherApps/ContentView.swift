@@ -64,7 +64,7 @@ struct ContentView: View {
                 .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 8))
 
             VStack(alignment: .leading, spacing: 3) {
-                Text("Quit Other Apps")
+                Text("Focus Keeper")
                     .font(.title2.weight(.semibold))
                 Text("Choose what stays open, then close the rest.")
                     .font(.subheadline)
@@ -149,7 +149,7 @@ struct ContentView: View {
 
                 BuiltInProtectedRow(
                     systemImage: "app.dashed",
-                    title: "Quit Other Apps",
+                    title: "Focus Keeper",
                     detail: "This control panel stays open."
                 )
             }

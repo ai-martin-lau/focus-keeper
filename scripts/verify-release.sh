@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-APP_PATH="$ROOT_DIR/dist/Quit Other Apps.app"
+APP_PATH="$ROOT_DIR/dist/Focus Keeper.app"
 DMG_PATH="$ROOT_DIR/dist/focus-keeper.dmg"
 
 "$ROOT_DIR/scripts/build-dmg.sh" >/dev/null

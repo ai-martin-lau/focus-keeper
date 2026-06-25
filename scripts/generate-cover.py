@@ -79,7 +79,7 @@ def render(width: int, height: int) -> Image.Image:
     draw.rounded_rectangle((left, top, left + chip_w, top + chip_h), radius=int(12 * scale), fill=chip_fill)
     draw.text((left + int(22 * scale), top + int(12 * scale)), "macOS utility", font=mono(int(18 * scale)), fill=chip_text)
 
-    text_shadow(draw, (left, int(166 * scale)), "Quit Other Apps", font(int(70 * scale)), title_fill, shadow)
+    text_shadow(draw, (left, int(166 * scale)), "Focus Keeper", font(int(70 * scale)), title_fill, shadow)
     text_shadow(draw, (left + int(4 * scale), int(258 * scale)), "Protect what stays open.", font(int(32 * scale)), body_fill, shadow)
     text_shadow(draw, (left + int(4 * scale), int(304 * scale)), "Close the rest.", font(int(32 * scale)), body_fill, shadow)
 
@@ -114,7 +114,7 @@ def main() -> None:
     social.save(ASSETS / "social-preview.png", "PNG", optimize=True, compress_level=9)
     save_under_1mb_jpeg(social, ASSETS / "social-preview.jpg")
 
-    desktop_target = DESKTOP / "quit-other-apps-social-preview.jpg"
+    desktop_target = DESKTOP / "focus-keeper-social-preview.jpg"
     shutil.copy2(ASSETS / "social-preview.jpg", desktop_target)
 
     print(ASSETS / "cover.png")

@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DMG_PATH="${1:-$ROOT_DIR/dist/focus-keeper.dmg}"
-NOTARY_PROFILE="${NOTARY_PROFILE:-quit-other-apps-notary}"
+NOTARY_PROFILE="${NOTARY_PROFILE:-focus-keeper-notary}"
 
 if [[ ! -f "$DMG_PATH" ]]; then
     echo "DMG not found: $DMG_PATH" >&2

@@ -17,7 +17,7 @@ ln -s /Applications "$STAGING_DIR/Applications"
 
 rm -f "$DMG_PATH"
 hdiutil create \
-    -volname "Quit Other Apps" \
+    -volname "Focus Keeper" \
     -srcfolder "$STAGING_DIR" \
     -ov \
     -format UDZO \
