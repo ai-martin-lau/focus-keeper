@@ -14,7 +14,7 @@ Instead of editing an AppleScript whitelist, open the app, scan Applications, an
 
 ## Download
 
-Download the latest version: [`quit-other-apps.dmg`](https://github.com/ai-martin-lau/quit-other-apps-ui/releases/latest/download/quit-other-apps.dmg)
+Download the latest version: [`quit-other-apps.dmg`](https://github.com/ai-martin-lau/focus-keeper/releases/latest/download/quit-other-apps.dmg)
 
 ## How It Works
 
@@ -31,20 +31,16 @@ Download the latest version: [`quit-other-apps.dmg`](https://github.com/ai-marti
 2. Drag `Quit Other Apps.app` into Applications.
 3. Open the app and choose the apps you want to protect.
 
+If macOS blocks the app on first launch:
+
+1. Open System Settings.
+2. Go to Privacy & Security.
+3. Scroll to Security and click Open Anyway for `Quit Other Apps.app`.
+4. Confirm Open when macOS asks.
+
 The first time the app closes Finder windows, macOS may ask for Automation permission. Allow it so the app can close Finder windows while keeping Finder running.
 
-## Signing
-
-The local build is ad-hoc signed by default. Users can still open it, but macOS may show an unidentified-developer warning on first launch.
-
-To reduce that warning for public distribution, sign with a Developer ID certificate and notarize the DMG:
-
-```sh
-CODESIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" ./scripts/build-dmg.sh
-NOTARY_PROFILE=quit-other-apps-notary ./scripts/notarize-dmg.sh
-```
-
-## Build
+## Build From Source
 
 ```sh
 ./scripts/build-dmg.sh

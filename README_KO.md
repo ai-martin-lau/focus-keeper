@@ -14,7 +14,7 @@ Quit Other Apps는 사용자가 보호한 앱은 그대로 두고, 다른 일반
 
 ## 다운로드
 
-최신 버전 다운로드: [`quit-other-apps.dmg`](https://github.com/ai-martin-lau/quit-other-apps-ui/releases/latest/download/quit-other-apps.dmg)
+최신 버전 다운로드: [`quit-other-apps.dmg`](https://github.com/ai-martin-lau/focus-keeper/releases/latest/download/quit-other-apps.dmg)
 
 ## 동작 방식
 
@@ -31,20 +31,16 @@ Quit Other Apps는 사용자가 보호한 앱은 그대로 두고, 다른 일반
 2. `Quit Other Apps.app`을 Applications로 드래그합니다.
 3. 앱을 열고 보호할 앱을 선택합니다.
 
+처음 실행할 때 macOS가 앱을 차단하는 경우:
+
+1. 시스템 설정을 엽니다.
+2. 개인정보 보호 및 보안으로 이동합니다.
+3. 보안 섹션까지 스크롤한 뒤 `Quit Other Apps.app`의 Open Anyway를 클릭합니다.
+4. macOS가 다시 물으면 Open을 확인합니다.
+
 처음 Finder 창을 닫을 때 macOS가 자동화 권한을 요청할 수 있습니다. Finder를 종료하지 않고 창만 닫으려면 허용해야 합니다.
 
-## 서명
-
-로컬 빌드는 기본적으로 ad-hoc 서명입니다. 사용자는 열 수 있지만, 처음 실행할 때 macOS가 확인되지 않은 개발자 경고를 표시할 수 있습니다.
-
-공개 배포 시에는 Developer ID 인증서로 서명하고 DMG를 notarize하세요.
-
-```sh
-CODESIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" ./scripts/build-dmg.sh
-NOTARY_PROFILE=quit-other-apps-notary ./scripts/notarize-dmg.sh
-```
-
-## 빌드
+## 소스에서 빌드
 
 ```sh
 ./scripts/build-dmg.sh

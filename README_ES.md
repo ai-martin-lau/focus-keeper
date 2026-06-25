@@ -14,7 +14,7 @@ Ya no hace falta editar una lista blanca en AppleScript. Abre la app, escanea Ap
 
 ## Descargar
 
-Descarga la última versión: [`quit-other-apps.dmg`](https://github.com/ai-martin-lau/quit-other-apps-ui/releases/latest/download/quit-other-apps.dmg)
+Descarga la última versión: [`quit-other-apps.dmg`](https://github.com/ai-martin-lau/focus-keeper/releases/latest/download/quit-other-apps.dmg)
 
 ## Cómo Funciona
 
@@ -31,20 +31,16 @@ Descarga la última versión: [`quit-other-apps.dmg`](https://github.com/ai-mart
 2. Arrastra `Quit Other Apps.app` a Applications.
 3. Abre la app y elige las apps que quieres proteger.
 
+Si macOS bloquea la app en el primer inicio:
+
+1. Abre System Settings.
+2. Ve a Privacy & Security.
+3. Baja hasta Security y haz clic en Open Anyway para `Quit Other Apps.app`.
+4. Confirma Open cuando macOS lo pida.
+
 La primera vez que la app cierre ventanas de Finder, macOS puede pedir permiso de Automatización. Permítelo para que la app pueda cerrar ventanas sin cerrar Finder.
 
-## Firma
-
-La compilación local usa firma ad-hoc por defecto. Los usuarios pueden abrirla, pero macOS puede mostrar una advertencia de desarrollador no identificado en el primer inicio.
-
-Para distribución pública, firma con un certificado Developer ID y notariza el DMG:
-
-```sh
-CODESIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" ./scripts/build-dmg.sh
-NOTARY_PROFILE=quit-other-apps-notary ./scripts/notarize-dmg.sh
-```
-
-## Compilar
+## Compilar desde el código fuente
 
 ```sh
 ./scripts/build-dmg.sh
