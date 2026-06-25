@@ -2,10 +2,6 @@
   <a href="README.md">English</a> · <a href="README_ZH.md">简体中文</a> · <a href="README_JA.md">日本語</a> · 한국어 · <a href="README_ES.md">Español</a>
 </p>
 
-<p align="center">
-  <img src="assets/cover.png" alt="Focus Keeper" width="100%">
-</p>
-
 # Focus Keeper
 
 Focus Keeper는 사용자가 보호한 앱은 그대로 두고, 다른 일반 전면 앱에 정상 종료 요청을 보내는 작은 네이티브 macOS 유틸리티입니다.

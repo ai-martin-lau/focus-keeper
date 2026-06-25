@@ -2,10 +2,6 @@
   <a href="README.md">English</a> · 简体中文 · <a href="README_JA.md">日本語</a> · <a href="README_KO.md">한국어</a> · <a href="README_ES.md">Español</a>
 </p>
 
-<p align="center">
-  <img src="assets/cover.png" alt="Focus Keeper" width="100%">
-</p>
-
 # Focus Keeper
 
 Focus Keeper 是一个原生 macOS 小工具，用来关闭其他干扰 App，同时保留你指定的 App。
