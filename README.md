@@ -14,7 +14,7 @@ Instead of editing an AppleScript whitelist, open the app, scan Applications, an
 
 ## Download
 
-Download the latest version: [`quit-other-apps.dmg`](https://github.com/ai-martin-lau/focus-keeper/releases/latest/download/quit-other-apps.dmg)
+Download the latest version: [`focus-keeper.dmg`](https://github.com/ai-martin-lau/focus-keeper/releases/latest/download/focus-keeper.dmg)
 
 ## How It Works
 
@@ -47,4 +47,4 @@ The first time the app closes Finder windows, macOS may ask for Automation permi
 ./scripts/verify-release.sh
 ```
 
-The DMG is written to `dist/quit-other-apps.dmg`.
+The DMG is written to `dist/focus-keeper.dmg`.

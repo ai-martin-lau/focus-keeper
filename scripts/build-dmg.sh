@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_PATH="$("$ROOT_DIR/scripts/build-app.sh")"
 DIST_DIR="$ROOT_DIR/dist"
-DMG_PATH="$DIST_DIR/quit-other-apps.dmg"
+DMG_PATH="$DIST_DIR/focus-keeper.dmg"
 STAGING_DIR="$(mktemp -d)"
 
 cleanup() {

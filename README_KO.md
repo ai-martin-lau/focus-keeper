@@ -14,7 +14,7 @@ Quit Other Apps는 사용자가 보호한 앱은 그대로 두고, 다른 일반
 
 ## 다운로드
 
-최신 버전 다운로드: [`quit-other-apps.dmg`](https://github.com/ai-martin-lau/focus-keeper/releases/latest/download/quit-other-apps.dmg)
+최신 버전 다운로드: [`focus-keeper.dmg`](https://github.com/ai-martin-lau/focus-keeper/releases/latest/download/focus-keeper.dmg)
 
 ## 동작 방식
 
@@ -47,4 +47,4 @@ Quit Other Apps는 사용자가 보호한 앱은 그대로 두고, 다른 일반
 ./scripts/verify-release.sh
 ```
 
-DMG는 `dist/quit-other-apps.dmg`에 생성됩니다.
+DMG는 `dist/focus-keeper.dmg`에 생성됩니다.

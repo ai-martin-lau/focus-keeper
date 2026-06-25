@@ -14,7 +14,7 @@ Ya no hace falta editar una lista blanca en AppleScript. Abre la app, escanea Ap
 
 ## Descargar
 
-Descarga la última versión: [`quit-other-apps.dmg`](https://github.com/ai-martin-lau/focus-keeper/releases/latest/download/quit-other-apps.dmg)
+Descarga la última versión: [`focus-keeper.dmg`](https://github.com/ai-martin-lau/focus-keeper/releases/latest/download/focus-keeper.dmg)
 
 ## Cómo Funciona
 
@@ -47,4 +47,4 @@ La primera vez que la app cierre ventanas de Finder, macOS puede pedir permiso d
 ./scripts/verify-release.sh
 ```
 
-El DMG se genera en `dist/quit-other-apps.dmg`.
+El DMG se genera en `dist/focus-keeper.dmg`.
